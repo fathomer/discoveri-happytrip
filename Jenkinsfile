@@ -7,15 +7,16 @@ pipeline{
     stages{
         stage('Build'){
             steps {
-                echo "Build"
                 script{
                 if (${params.quality}) {
+                    echo "Build"
                     withSonarQubeEnv('sonarqube-vm'){
                         powershell label: '', script: 'mvn package sonar:sonar'
                     }
                 } else{
                      powershell label: '', script: 'mvn package'
-                }}
+                }
+                }
             }
         }
     }
