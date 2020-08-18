@@ -6,22 +6,23 @@ pipeline{
     }
     stages{
         stage('Build'){
+            when {
+                expression { params.quality}
+            }
             steps {
-                echo "${params.quality}"
-                echo "${params.deploy}"
-                
-                script{
-                if (${params.quality}) {
                     echo "Build with Sonar"
                     withSonarQubeEnv('sonarqube-vm'){
-                        powershell label: '', script: 'mvn package sonar:sonar'
+                    powershell label: '', script: 'mvn package sonar:sonar'
                     }
-                } else{
-                        echo "Build without Sonar"
-                        powershell label: '', script: 'mvn package'
-                }
-                }
             }
+            when {
+                expression {params.quality == false}
+            }        
+            steps {   
+                    echo "Build without Sonar"
+                    powershell label: '', script: 'mvn package'
+                  }
+                }
         }
     }
     post{
