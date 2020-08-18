@@ -24,7 +24,6 @@ pipeline{
                   }
                 }
         }
-    }
     post{
         always{
             echo "Archive"
@@ -35,5 +34,4 @@ pipeline{
             }}
             
         }
-    }
-}
+    }}
