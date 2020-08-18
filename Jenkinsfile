@@ -7,6 +7,9 @@ pipeline{
     stages{
         stage('Build'){
             steps {
+                echo "${params.quality}"
+                echo "${params.deploy}"
+                
                 script{
                 if (${params.quality}) {
                     echo "Build with Sonar"
