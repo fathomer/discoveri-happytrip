@@ -4,7 +4,7 @@ pipeline{
         stage('Build'){
             steps {
                 echo "Build"
-                 withSonarQubeEnv(){
+                 withSonarQubeEnv('sonarqube-vm'){
                     powershell label: '', script: 'mvn package sonar:sonar'
                 }
             }
