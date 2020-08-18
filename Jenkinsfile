@@ -9,12 +9,13 @@ pipeline{
             steps {
                 script{
                 if (${params.quality}) {
-                    echo "Build"
+                    echo "Build with Sonar"
                     withSonarQubeEnv('sonarqube-vm'){
                         powershell label: '', script: 'mvn package sonar:sonar'
                     }
                 } else{
-                     powershell label: '', script: 'mvn package'
+                        echo "Build without Sonar"
+                        powershell label: '', script: 'mvn package'
                 }
                 }
             }
