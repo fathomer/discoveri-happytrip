@@ -5,7 +5,7 @@ pipeline{
         booleanParam(name: 'deploy', description: 'Do you want code deployment? true/false', defaultValue : false)
     }
     stages{
-        stage('Build'){
+        stage('Build with Sonar'){
             when {
                 expression { params.quality}
             }
@@ -15,6 +15,8 @@ pipeline{
                     powershell label: '', script: 'mvn package sonar:sonar'
                     }
             }
+        }
+        stage('Build'){
             when {
                 expression {params.quality == false}
             }        
@@ -22,7 +24,7 @@ pipeline{
                     echo "Build without Sonar"
                     powershell label: '', script: 'mvn package'
                   }
-                }
+        }
         }
     post{
         always{
