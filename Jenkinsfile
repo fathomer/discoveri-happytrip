@@ -9,7 +9,7 @@ pipeline{
             steps {
                 echo "Build"
                 script{
-                if (${params.quality} == true) {
+                if (${params.quality}) {
                     withSonarQubeEnv('sonarqube-vm'){
                         powershell label: '', script: 'mvn package sonar:sonar'
                     }
@@ -23,7 +23,7 @@ pipeline{
         always{
             echo "Archive"
             archiveArtifacts artifacts: '**/*.war', followSymlinks: false
-            script{if (${params.deploy} == true) {
+            script{if (${params.deploy}) {
                 echo "Deploying on Tomcat"
                 deploy adapters: [tomcat7(credentialsId: 'tomcat7', path: '', url: 'http://localhost:8087/')], contextPath: 'happytrip', war: '**/*.war'    
             }}
