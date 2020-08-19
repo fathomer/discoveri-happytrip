@@ -25,19 +25,21 @@ pipeline{
                     powershell label: '', script: 'mvn package'
                   }
         }
+        stage('Deploy'){
+            when {
+                expression {params.deploy}
+            }        
+            steps {   
+                echo "Deploying on Tomcat"
+                deploy adapters: [tomcat7(credentialsId: 'tomcat7', path: '', url: 'http://localhost:8087/')], contextPath: 'happytrip', war: '**/*.war'
+            }
+        }
         }
     post{
         always{
             echo "Archive"
             archiveArtifacts artifacts: '**/*.war', followSymlinks: false
-            echo "Deploying on Tomcat"
-            deploy adapters: [tomcat7(credentialsId: 'tomcat7', path: '', url: 'http://localhost:8087/')], contextPath: 'happytrip', war: '**/*.war'
+       
         }
-        //success{
-          //   script{if ($params.deploy) {
-            //    echo "Deploying on Tomcat"
-              //  deploy adapters: [tomcat7(credentialsId: 'tomcat7', path: '', url: 'http://localhost:8087/')], contextPath: 'happytrip', war: '**/*.war'    
-               //}
-            //}
         }
     }
